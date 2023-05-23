@@ -48,11 +48,32 @@
 <h1>Welcome to the notification test page</h1>
 <p>Hello</p>
 <script>
-if (Notification.permission = 'granted') {
-    showAlert('notify', 'Please allow notifications for updates');
+function checkNotificationPermission() {
+  if (Notification.permission === "granted") {
+    console.log("Notifications are allowed. You'll receive updates.");
+    sendNotification();
+  } else if (Notification.permission === "denied") {
+    console.log("Notifications are not allowed. You won't receive updates.");
   } else {
-    alert("hi");
+    Notification.requestPermission().then(function(permission) {
+      if (permission === "granted") {
+        console.log("Notifications are allowed. You'll receive updates.");
+        sendNotification();
+      } else {
+        console.log("Notifications are not allowed. You won't receive updates.");
+      }
+    });
   }
+}
+
+function sendNotification() {
+  var notification = new Notification("This is a test", {
+    body: "There is a new update available.",
+  });
+}
+
+checkNotificationPermission();
+
 </script>
 <!--
   <button onclick="showAlert('warning', 'This is a warning alert!')">Show Warning Alert</button>
